@@ -1,53 +1,42 @@
 #include <stdio.h>
+#include <math.h>
 
-void search(int data[],int key,int x){
-    int t;
-    if(x%2 == 1) {
-        int t = x/2;        
-    } else {
-        int t = x/2 - 1;
-    }
-    if(data[t] == key) {
-        printf("%d", t);
-    } else if(data[t] > key) {
-        printf("%d %d %d", 0, x-1, t);
-        while (data[t] != key) {
-            int tmp = t;
-            t = t/2;
-            if(data[t] == key) {
-                printf("%d", t);
-                break;
-            } else if(data[t] > key) {
-                printf("%d %d %d", 0, tmp-1, t);
-            } else {
-                printf("%d %d %d", tmp+1, tmp, t);
-            }
-        }        
-    } else {
-        printf("%d %d %d", 0, x-1, t);
-        while (data[t] != key) {
-            int tmp = t;
-            t = (t+x)/2;
-            if(data[t] == key) {
-                printf("%d", t);
-                break;
-            } else if(data[t] > key) {
-                printf("%d %d %d", tmp+1, x-1, t);
-            } else {
-                printf("%d %d %d", 0, tmp-1, t);
-            }
+void search(int a[], int n, int key) {
+    int left = 0, right = n - 1, mid = floor((left + right) / 2);
+    printf("%d %d %d\n", left, right, mid);
+    while (left <= right) {
+        if (a[mid] < key) {
+            left = floor((left + right) / 2) + 1;
+            mid = floor((left + right) / 2);
+        } else {
+            right = floor((left + right) / 2) - 1;
+            mid = floor((left + right) / 2);            
+        }
+        if (left < right) {
+            printf("%d %d %d\n", left, right, mid);
+        }
+        if (a[mid] == key) {
+            printf("%d\n", mid);            
+            return;            
+        }
+        if (left >= right) {
+            printf("-1\n");
+            return;
         }
     }
-}
+}    
 
-int main() {
-    int data[10000];
-    int x,k;
-    scanf("%d",&x);
-    for(int i = 0; i < x; i++) {
-        scanf("%d ",data[i]);
+int main(void) {
+    int n, key;
+    int a[10000];
+
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d ", &a[i]);
     }
-    scanf("%d",&k);
-    search(data, k, x);
+    scanf("%d", &key);
 
+    search(a, n, key);
+
+    return 0;
 }

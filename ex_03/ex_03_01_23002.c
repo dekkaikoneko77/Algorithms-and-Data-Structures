@@ -15,6 +15,20 @@ Stack* initStack(int max) {
     return stack;
 }
 
+int nostack(Stack *stack) {
+    if (stack->sp == 0) {
+        return 1;
+    }
+    return 0;
+}
+
+int fullstack(Stack *stack) {
+    if (stack->sp == stack->max) {
+        return 1;
+    }
+    return 0;
+}
+
 void clear(Stack *stack) {
     stack->sp = 0;
 }
@@ -58,27 +72,12 @@ int search(Stack *stack, int value) {
     for (int i = stack->sp - 1; i >= 0; i--) {
         if (stack->data[i] == value) {
             return stack->sp - 1 - i;
-            a++;
         }
     }
-    if (a == 0) {
-        return -1;
-    }
+    return -1;    
 }
 
-int nostack(Stack *stack) {
-    if (stack->sp == 0) {
-        return 1;
-    }
-    return 0;
-}
 
-int fullstack(Stack *stack) {
-    if (stack->sp == stack->max) {
-        return 1;
-    }
-    return 0;
-}
 
 int main(void) {
     Stack *stack = initStack(8);
@@ -97,20 +96,23 @@ int main(void) {
             printf("display\n");
             if (stack->sp == 0) {
                 printf("%d\n", -1);
-                break;
             } else {
                 for (int i = stack->sp - 1; i >= 0; i--) {
-                    printf("%d ", display(stack, i));
+                    printf("%d\n", display(stack, i));
                 }
-                printf("\n");
             }
         } else if (a == 5) {
             clear(stack);
         } else if (a == 6) {
             scanf("%d", &b);
             printf("search: %d\n", search(stack, b));
-        } else if (a ==7) {
-
+        } else if (a == 7) {
+            printf("empty: %d\n", nostack(stack));
+        } else if (a == 8) {
+            printf("full: %d\n", fullstack(stack));
+        } else if (a < 0) {
+            freeStack(stack);
+            break;
         }
     }
 }

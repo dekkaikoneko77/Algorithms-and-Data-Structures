@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     int* data;
@@ -15,44 +16,62 @@ BinaryTree* create_tree(int height) {
 }
 
 void append(BinaryTree* tree, int value) {
-    tree->data[tree->size] = value;
-    tree->size++;
+    if (tree == NULL) {
+        return;
+    }
+    if (tree->size < tree->capacity) {
+        tree->data[tree->size] = value;
+        tree->size++;
+    }
 }
 
 void delete_end(BinaryTree* tree) {
+    if (tree == NULL) {
+        return;
+    }
     tree->size--;
 }
 
 void display(BinaryTree* tree) {
-    int tmp = 0;
+    int tmp = 1;
+
     printf("tree\n");
+    if(tree == NULL) {
+        printf("NULL\n");
+        return;
+    } else {
     for (int i = 1; i < tree->size; i++) {
         printf("%d ", tree->data[i]);
-        if (i == 2 ^ tmp) {
+        if (i == tmp) {
             printf("\n");
-            tmp++;
+            tmp = tmp * 2 + 1;
+            }            
         }
     }
     printf("\n");
 }
 
-int search(BinaryTree* tree, int value) {
+void search(BinaryTree* tree, int value) {
+    if (tree == NULL) {
+        return;
+    }
+    printf("index\n");
     for (int i = 1; i < tree->size; i++) {
         if (tree->data[i] == value) {
-            return i;
+            printf("%d\n", i);
+            return;
         }
     }
-    return -1;
+    printf("-1\n");
 }
 
-void clear(BinaryTree* tree) {
-    free(tree->data);
-}
-
-
-void free_tree(BinaryTree* tree) {
+BinaryTree* free_tree(BinaryTree* tree) {
+    if (tree == NULL) {
+        return NULL;
+    }
     free(tree->data);
     free(tree);
+    return NULL;
 }
 
 int main() {
@@ -60,11 +79,26 @@ int main() {
     while(1) {
         int a = 0, b = 0;
         scanf("%d", &a);
-        if (a == 0) {
+        if (a == 1) {
             scanf("%d", &b);
             append(tree, b);
+        } else if (a == 2) {
+            delete_end(tree);
+        } else if (a == 3) {
+            display(tree);
+        } else if (a == 4) {
+            scanf("%d", &b);
+            search(tree, b);
+        } else if (a == 5) {
+            tree = free_tree(tree);
+        } else if (a == 6) {
+            scanf("%d", &b);
+            tree = create_tree(b);
+        } else if (a < 0) {
+            tree = free_tree(tree);
+            break;
         }
     } 
-
+    return 0;
 }
 

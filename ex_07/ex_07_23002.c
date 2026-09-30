@@ -3,30 +3,81 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void display(Stack* stack){
-    printf("---");
+int count = 0;
 
+void start_stack(Stack *stack, int n) {
+    for (int i = n; i >= 1; i--) {
+        push(stack, i);
+    }
 }
 
-void move(Stack* stack,int n, int from, int work, int to) {
+void move_disk(Stack *from, Stack *to) {
+    int disk = pop(from);
+    push(to, disk);
+    count++;
+}
+
+void display(Stack *A, Stack *B, Stack *C) {
+    int i;
+
+    printf("---\n");
+
+    for (i = 0; i < A->sp; i++) {
+        printf("v%d ", A->data[i]);
+    }
+    printf("\n");
+
+    for (i = 0; i < B->sp; i++) {
+        printf("v%d ", B->data[i]);
+    }
+    printf("\n");
+
+    for (i = 0; i < C->sp; i++) {
+        printf("v%d ", C->data[i]);
+    }
+    printf("\n");
+}
+
+void move(Stack *stack[], int n, int from, int work, int to) {
     if (n == 1) {
-        printf("ÂÜÜÁõ§%d„Çí %d „Åã„Çâ %d „Å∏ÁßªÂãï\n", n, from, to);
-        display(stack);
+        move_disk(stack[from - 1], stack[to - 1]);
+        display(stack[0], stack[1], stack[2]);
         return;
     }
+
     move(stack, n - 1, from, to, work);
-    printf("ÂÜÜÁõ§%d„Çí %d „Åã„Çâ %d „Å∏ÁßªÂãï\n", n, from, to);
+
+    move_disk(stack[from - 1], stack[to - 1]);
+    display(stack[0], stack[1], stack[2]);
+
     move(stack, n - 1, work, from, to);
 }
 
-int main() {
-    int a = 0;
-    scanf("%d", &a);
+int main(void) {
+    int n;
 
-    Stack* stack = init_stack(a);
+    scanf("%d", &n);
 
-    move(stack, a, 1, 2, 3);
+    Stack *stack[3];
 
+    for (int i = 0; i < 3; i++) {
+        stack[i] = init_stack(n);
+    }
 
+    /* äJénèÛë‘ */
+    start_stack(stack[0], n);
+
+    display(stack[0], stack[1], stack[2]);
+
+    /* ÉnÉmÉCÇÃìÉé¿çs */
+    move(stack, n, 1, 2, 3);
+
+    /* ëçà⁄ìÆâÒêî */
+    printf("%d\n", count);
+
+    for (int i = 0; i < 3; i++) {
+        free_stack(stack[i]);
+    }
+
+    return 0;
 }
-
