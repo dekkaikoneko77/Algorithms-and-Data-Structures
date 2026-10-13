@@ -8,37 +8,29 @@ int main() {
 
     int j = 0,n = 9;
     int w1 = 0, w2 = 0, w3 = 0;
+
     for (int k = 0; k < 2; k++) {
         w1 = 0, w2 = 0, w3 = 0;
-        for (int i = j; i < n / 3; i++) {
-            w1 += w[i];      
-            w2 += w[i + 3];  
-            w3 += w[i + 6];  
+
+        int groupSize = n / 3;
+
+        for (int i = 0; i < groupSize; i++) {
+            w1 += w[j + i];
+            w2 += w[j + groupSize + i];
+            w3 += w[j + 2 * groupSize + i];
         }
+
         if (w1 > w2) {
-            if (w1 == 0) {
-                printf("%d\n", n);
-                break;
-            } else {
-                n = n / 3;
-            }
+            j += groupSize;
+            n = groupSize;
         } else if (w2 > w1) {
-            if (w2 == 0) {
-                printf("%d\n", n);
-                break;
-            } else {
-                j = n / 3;
-                n = 2 * n / 3;
-            }
+            n = groupSize;
         } else {
-            if (w3 == 0) {
-                printf("%d\n", n);
-                break;
-            } else {
-                j = 2 * n / 3;
-            }
+            j += 2 * groupSize;
+            n = groupSize;
         }
     }
-    
 
+    printf("%d\n", j + 1);
+    return 0;
 }
