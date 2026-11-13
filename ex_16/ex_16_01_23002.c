@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-BB_subsetsum(int level, int n, int s, int x[], int y[]) {
+int BB_subsetsum(int level, int n, int s, int x[], int y[]) {
     int found = 0;
 
     if (level > n) {
@@ -32,12 +32,25 @@ BB_subsetsum(int level, int n, int s, int x[], int y[]) {
         }
     }
     return found;
-
-    if (level == 1) {
-        printf("sに等しい選び方が存在しない\n");
-    }
 }
 
 int main() {
+    int n, s;
+    int x[11], y[11]; // 荷物は1番から使う
+    int i;
+
+    scanf("%d %d", &n, &s);
+    for (i = 1; i <= n; i++) {
+        scanf("%d", &x[i]);
+        y[i] = 0; // 初期化
+    }
+
+    if (BB_subsetsum(1, n, s, x, y)) {
+        printf("sに等しい選び方が存在する\n");
+    } else {
+        printf("sに等しい選び方が存在しない\n");
+    }
+
+    return 0;
 
 }
