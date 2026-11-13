@@ -5,7 +5,7 @@ int BB_subsetsum(int level, int n, int s, int x[], int y[]) {
 
     if (level > n) {
         int sum = 0;
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
             sum += y[i] * x[i];
         }
         if (sum == s) { 
@@ -21,13 +21,13 @@ int BB_subsetsum(int level, int n, int s, int x[], int y[]) {
                 sum2 = sum2 + x[i];
             }
         }
-        if ((sum1 <= s) && (sum2 >= s)) { //æåˆˆã‚Šã®åˆ¤å®š
+        if ((sum1 <= s) && (sum2 >= s)) { //}Š ‚è‚Ì”»’è
             y[level] = 0;
-            found = BT_subsetsum(level + 1, n, s, x, y);
+            found = BB_subsetsum(level + 1, n, s, x, y);
             if (!found) {
-                // è§£ãŒè¦‹ã¤ã‹ã£ã¦ã„ãªã‘ã‚Œã°ã‚‚ã†ç‰‡æ–¹ã®é¸æŠã‚’æ¢ç´¢
+                // ‰ğ‚ªŒ©‚Â‚©‚Á‚Ä‚¢‚È‚¯‚ê‚Î‚à‚¤•Ğ•û‚Ì‘I‘ğ‚ğ’Tõ
                 y[level] = 1;
-                found = BT_subsetsum(level + 1, n, s, x, y);
+                found = BB_subsetsum(level + 1, n, s, x, y);
             }
         }
     }
@@ -36,21 +36,27 @@ int BB_subsetsum(int level, int n, int s, int x[], int y[]) {
 
 int main() {
     int n, s;
-    int x[11], y[11]; // è·ç‰©ã¯1ç•ªã‹ã‚‰ä½¿ã†
+    int x[11], y[11]; // ‰×•¨‚Í1”Ô‚©‚çg‚¤
     int i;
 
-    scanf("%d %d", &n, &s);
+    scanf("%d %d", &s, &n);
     for (i = 1; i <= n; i++) {
         scanf("%d", &x[i]);
-        y[i] = 0; // åˆæœŸåŒ–
+        y[i] = 0; // ‰Šú‰»
     }
 
     if (BB_subsetsum(1, n, s, x, y)) {
-        printf("sã«ç­‰ã—ã„é¸ã³æ–¹ãŒå­˜åœ¨ã™ã‚‹\n");
+        for (i = 1; i <= n; i++) {
+            if (y[i] == 1) {
+                printf("1 ");
+            } else {
+                printf("0 ");
+            }
+        }
+        printf("\n");
     } else {
-        printf("sã«ç­‰ã—ã„é¸ã³æ–¹ãŒå­˜åœ¨ã—ãªã„\n");
+        printf("s‚É“™‚µ‚¢‘I‚Ñ•û‚ª‘¶İ‚µ‚È‚¢\n");
     }
 
     return 0;
-
 }
